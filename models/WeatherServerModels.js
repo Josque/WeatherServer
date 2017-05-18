@@ -37,6 +37,10 @@ var SensorNodeSchema = mongoose.Schema({
                 enum: supportedMeasurements
             }
         ]
+    },
+    dateAdded: {
+        type: Date,
+        default: Date.now()
     }
 });
 

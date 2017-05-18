@@ -1,0 +1,3 @@
+{
+  "mongooseURL": "mongodb://localhost/weatherserver"
+}

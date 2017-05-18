@@ -1,0 +1,32 @@
+POST /api/temperature
+
+{
+	"sensorID": "GUID",
+	"temperature": 20.4,
+}
+
+POST /api/humidity
+
+{
+	"sensorID": "GUID",
+	"humidity": 85
+}
+
+
+
+POST /api/sensor_result
+{
+	"sensorID": "GUID",
+	"sensorData":
+	[
+		{
+			"sensorType": "humidity",
+			"humidity": 85
+		}
+		{
+			"sensorType": "temperature",
+			"temperature": 20.4
+		}
+	]
+
+}

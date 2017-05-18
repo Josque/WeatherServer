@@ -1,16 +1,28 @@
+var config = require('../config.json');
 var express = require('express');
+
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-	res.send({
-		hello: "World"
+var mongoose = require('mongoose');
+var WeatherServerModels = require('../models/WeatherServerModels');
+
+var WeatherMeasurement = WeatherServerModels.WeatherMeasurement;
+
+mongoose.connect(config.mongooseURL);
+
+router.post('/measurement', function(req, res, next){
+
+	var measurement = new WeatherMeasurement(req.body);
+
+	measurement.save(function(err){
+		if(err){
+			console.log(err);
+			res.status(400).send(err);
+		}
+		else{
+			res.status(200).send();
+		}
 	});
 });
 
-router.post('/weatherResult', function(req, res, next){
-	console.log(req.get('foo'));
-
-	res.send().status(200);
-});
 module.exports = router;

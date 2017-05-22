@@ -41,17 +41,45 @@ var APIKeySchema = mongoose.Schema({
     expirationDate:{
         type: Date
     },
+    enabled: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
     permissions: {
         type: String,
         enum: Permissions
+    },
+    name: {
+        type: String
+    },
+    description: {
+        type: String
     }
 
 });
 
 APIKeySchema.plugin(uniqueValidator);
 
-APIKeySchema.methods.checkAPIKey = function(apikey, callback){
+APIKeySchema.statics.checkAPIKey = function(apikey, callback){
+    this.findOne({APIKey: apikey}, function(err, key){
+        if(err){
+            callback(err);
+        }
+        if(!key){
+            callback(null, false);
+        }
+        if(key){
+            callback(null, key);
+        }
+    })
+};
 
+APIKeySchema.statics.createAPIKey = function(name, description, callback){
+  key = new this();
+  key.name = name;
+  key.description = description;
+  callback(null, key);
 };
 
 var userSchema = mongoose.Schema({

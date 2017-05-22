@@ -6,7 +6,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 mongoose.connect(config.mongooseURL);
 
-var WeatherServerModels = require('../models/WeatherServerModels');
+var WeatherServerModels = require('../models/WeatherDataModels');
 var WeatherMeasurement = WeatherServerModels.WeatherMeasurement;
 
 var SensorNode = WeatherServerModels.SensorNode;
@@ -38,5 +38,6 @@ router.post('/sensorNode', function(req, res, next){
 		}
 	})
 });
+
 
 module.exports = router;

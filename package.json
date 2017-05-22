@@ -13,6 +13,9 @@
     "jade": "~1.11.0",
     "mongoose": "^4.9.10",
     "morgan": "~1.8.1",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "password-hash-and-salt": "^0.1.4",
     "serve-favicon": "~2.4.2",
     "uuid": "^3.0.1"
   }

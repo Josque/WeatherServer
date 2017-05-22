@@ -11,6 +11,44 @@ var api   = require('./routes/api');
 
 var app = express();
 
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var ApiKey = require('./models/AuthDataModels').APIKey;
+var User = require('./models/AuthDataModels').User;
+
+passport.use( new LocalStrategy(
+    function(username, password, callback){
+        User.checkLogin(username, password, function(err, username){
+          if(err){
+            return callback(err);
+          }
+          if(!username){
+            return callback(null, false);
+          }
+          if(username){
+            return callback(null, username);
+          }
+        })
+    }
+));
+
+passport.serializeUser(function(user, callback) {
+    callback(null, user._id);
+});
+
+passport.deserializeUser(function(id, callback) {
+    User.findOne({_id: id}, function (err, user) {
+        if (err) { return callback(err); }
+        callback(null, user);
+    });
+});
+
+app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(require('express-session')({ secret: '456742fd-6825-41cc-8d50-47cd7a1089cb', resave: false, saveUninitialized: false }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

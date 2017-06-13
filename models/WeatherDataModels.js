@@ -46,5 +46,6 @@ var SensorNodeSchema = mongoose.Schema({
     }
 });
 
+module.exports.SupportedMeasurements = supportedMeasurements;
 module.exports.WeatherMeasurement = mongoose.model('WeatherMeasurement', WeatherMeasurementSchema);
 module.exports.SensorNode = mongoose.model('SensorNode', SensorNodeSchema);

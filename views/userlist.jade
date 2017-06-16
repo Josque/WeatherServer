@@ -1,0 +1,8 @@
+extends layout
+
+block content
+    h1 Users
+    ul
+        each val, index in users
+            li
+                a(href=val.editUrl) #{val.username}

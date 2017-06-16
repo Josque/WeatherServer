@@ -53,7 +53,7 @@ router.get('/measurement/measurementType/:measurementType', function(req, res){
 		querySelect,
 		function(err, query_result){
         	if(err){
-        		console.error(err)
+        		console.error(err);
 				res.status(500).send(err);
 			}
 			else{

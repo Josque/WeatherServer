@@ -16,6 +16,10 @@ router.post(
     '/login',
     passport.authenticate('local', { failureRedirect: '/login' }),
     function(req, res){
+        if(req.session.returnTo){
+            res.redirect(req.session.returnTo);
+            return;
+        }
       res.redirect('/profile');
   });
 
@@ -32,6 +36,14 @@ router.get(
     function(req, res){
         res.render('profile', {user: req.user });
     });
+
+router.get(
+    '/userpage',
+    ensureLogin,
+    function(req, res){
+        res.render('index', { title: "Express", name: req.user.username})
+    }
+)
 
 
 module.exports = router;

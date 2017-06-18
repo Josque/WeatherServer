@@ -1,0 +1,53 @@
+extends layout
+
+
+block content
+
+    script(type='text/javascript', src='/js/moment.js')
+    script(type='text/javascript', src='/js/Chart.js')
+    script(type='text/javascript').
+        var config = {
+            type: 'line',
+            data: {},
+            options: {
+                title: {
+                    text: "Temperature"
+                },
+                scales: {
+                    xAxes: [{
+                        type: "time",
+                        time: {
+                            format: "DD/MM/YYYY HH:mm",
+                            tooltipFormat: 'll HH:mm'
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Temperature (&deg;C)'
+                        }
+                    }]
+                }
+            }
+        };
+        window.onload = function () {
+            var ctx = document.getElementById("plotcanvas").getContext("2d");
+            var sourcedata = JSON.parse('!{chartdata}');
+            config.data = sourcedata;
+            var labels = [];
+            for(i in sourcedata.labels){
+                var m = new moment(sourcedata.labels[i]);
+                labels.push(m);
+            }
+            config.data.labels = labels;
+            window.lineChart = new Chart(ctx, config);
+        };
+
+
+    script(type='text/javascript', src='/js/RenderTemperatureChart.js')
+    div(style="width:75;")
+        canvas(id='plotcanvas')

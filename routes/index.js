@@ -1,8 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-
+var WeatherServerModels = require('../models/WeatherDataModels');
+var WeatherMeasurement = WeatherServerModels.WeatherMeasurement;
 var ensureLogin = require('connect-ensure-login').ensureLoggedIn();
+var moment = require('moment');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express', name: 'Anonymous Coward' });
@@ -42,6 +44,42 @@ router.get(
     ensureLogin,
     function(req, res){
         res.render('index', { title: "Express", name: req.user.username})
+    }
+);
+
+router.get(
+    '/temperature/:ID',
+    function(req, res){
+        WeatherMeasurement.find({
+                sensorNodeID: req.params.ID
+            },
+            null,
+            {sort: {timestamp: 1}},
+            function(err, query_result){
+                if(err){
+                    console.error(err);
+                    res.status(500).send(err);
+                }
+                else{
+                    data = {
+                        labels: [],
+                        datasets: [{
+                            label: "Temperature",
+                            fill: false,
+                            data: []
+                        }]
+                    };
+                    for(q in query_result) {
+                        item = query_result[q];
+                        data.labels.push(item.timestamp);
+                        data.datasets[0].data.push(item.value);
+                    }
+                    console.log(data);
+
+                    res.render('temperatureChart', { chartdata: JSON.stringify(data)});
+                }
+            })
+
     }
 );
 

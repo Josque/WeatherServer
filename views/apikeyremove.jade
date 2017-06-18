@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    include toolbar
+
+    if result
+        h1 The API Key #{name} has been removed.
+    else
+        h1 The API Key has not been removed.
+        div The API Key has not been removed because the wrong username was entered.
+        div You entered: #{name}

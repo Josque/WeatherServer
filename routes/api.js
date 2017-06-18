@@ -2,7 +2,7 @@ var config = require('../config.json');
 var express = require('express');
 
 var router = express.Router();
-
+var passport = require('passport');
 var mongoose = require('mongoose');
 mongoose.connect(config.mongooseURL);
 
@@ -14,7 +14,9 @@ var SensorNode = WeatherServerModels.SensorNode;
 
 var querySelect = "sensorNodeId measurementType value timestamp"
 
-router.get('/measurement', function(req, res){
+var ensureApiKey = passport.authenticate('headerapikey', {session: false, failureRedirect: '/api/unauthorized'});
+
+router.get('/measurement', ensureApiKey, function(req, res){
 	WeatherMeasurement.find(
 		{},
         querySelect,
@@ -29,7 +31,7 @@ router.get('/measurement', function(req, res){
 	})
 });
 
-router.get('/measurement/sensorNode/:sensorNodeID', function(req, res){
+router.get('/measurement/sensorNode/:sensorNodeID', ensureApiKey, function(req, res){
 	WeatherMeasurement.find({
 		sensorNodeID: req.params.sensorNodeID
 	},
@@ -45,7 +47,7 @@ router.get('/measurement/sensorNode/:sensorNodeID', function(req, res){
 	})
 });
 
-router.get('/measurement/measurementType/:measurementType', function(req, res){
+router.get('/measurement/measurementType/:measurementType', ensureApiKey, function(req, res){
 	if(req.params.measurementType in SupportedMeasurements){
         WeatherMeasurement.find({
             measurementType: req.params.measurementType
@@ -70,7 +72,7 @@ router.get('/measurement/measurementType/:measurementType', function(req, res){
 	}
 });
 
-router.post('/measurement', function(req, res, next){
+router.post('/measurement', ensureApiKey, function(req, res, next){
 
 	var measurement = new WeatherMeasurement(req.body);
 
@@ -85,7 +87,7 @@ router.post('/measurement', function(req, res, next){
 	});
 });
 
-router.post('/sensorNode', function(req, res, next){
+router.post('/sensorNode', ensureApiKey, function(req, res, next){
 	var sensorNode = new SensorNode(req.body);
 	sensorNode.save(function(err){
 		if(err){
@@ -95,8 +97,11 @@ router.post('/sensorNode', function(req, res, next){
 		else{
 			res.status(200).send();
 		}
-	})
+	});
 });
 
+router.get('/unauthorized', function (req, res) {
+	res.status(403).send({error: "unauthorized"});
+});
 
 module.exports = router;

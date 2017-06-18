@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    include toolbar
+
+    h1 API Keys
+    a(href='/admin/apikey/create') Create new API Key
+    ul
+        each val, index in apikeys
+            li
+                a(href="/admin/apikey/" + val._id) #{val.name}

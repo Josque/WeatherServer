@@ -1,0 +1,35 @@
+extends layout
+
+block content
+    include toolbar
+
+    h1 Edit API Key
+    form(action="/admin/apikey/#{key._id}" method="post")
+        table
+            tr
+                td API Key
+                td #{key.APIKey}
+            tr
+                td Name
+                td
+                    input(type='text', value='#{key.name}', name='name')
+            tr
+                td Description
+                td
+                    textarea(name='description', cols=32, rows=5) #{key.description}
+            tr
+                td Enabled:
+                td
+                    if key.enabled
+                        input(type='checkbox', name='enabled' checked)
+                    else
+                        input(type='checkbox', name='enabled')
+            tr
+                td Created On
+                td #{key.dateCreated}
+        input(type='submit')
+    h2 Delete API key
+    form(action="/admin/apikey/#{key._id}/delete" method="post")
+        div Enter key name and click confirm to delete this key
+        input(type='text', name='name')
+        input(type='submit', value='confirm')

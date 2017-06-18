@@ -13,6 +13,7 @@ var app = express();
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var HeaderAPIkeyStrategy = require('passport-headerapikey').HeaderAPIKeyStrategy;
 var ApiKey = require('./models/AuthDataModels').APIKey;
 var User = require('./models/AuthDataModels').User;
 
@@ -30,6 +31,22 @@ passport.use( new LocalStrategy(
           }
         })
     }
+));
+
+passport.use( new HeaderAPIkeyStrategy(
+    { header: 'apikey', prefix: ''},
+    false,
+   function(apikey, callback){
+       ApiKey.checkAPIKey(apikey, function(err, key){
+           if(err){
+               callback(err);
+           }
+           if( !key ){
+               return callback(null, false);
+           }
+           return(callback(null, key));
+       });
+   }
 ));
 
 passport.serializeUser(function(user, callback) {

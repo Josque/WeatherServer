@@ -16,6 +16,7 @@
     "mongoose-unique-validator": "^1.0.5",
     "morgan": "~1.8.1",
     "passport": "^0.3.2",
+    "passport-headerapikey": "^1.0.3",
     "passport-local": "^1.0.0",
     "password-hash-and-salt": "^0.1.4",
     "serve-favicon": "~2.4.2",

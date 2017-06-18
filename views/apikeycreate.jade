@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    include toolbar
+
+    h1 Create API Key
+    form(action="/admin/apikey/create" method="post")
+        table
+            tr
+                td
+                    span Name:
+                td
+                    input(type='text', name='name')
+            tr
+                td
+                    span Description:
+                td
+                    textarea(name='description', cols= 32, rows = 5)
+        input(type='submit')

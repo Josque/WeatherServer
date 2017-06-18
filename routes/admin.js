@@ -11,6 +11,7 @@ mongoose.connect(config.mongooseURL);
 
 var AuthModels = require('../models/AuthDataModels');
 var User = AuthModels.User;
+var APIKey = AuthModels.APIKey;
 
 var ensureLogin = require('connect-ensure-login').ensureLoggedIn();
 /* GET home page. */
@@ -69,7 +70,7 @@ router.post(
                            res.status(500).send(err);
                        }
                        else{
-                           res.send(result);
+                           res.redirect('/admin/user/' + result._id);
                        }
                    }
 
@@ -150,5 +151,121 @@ router.post(
     }
 );
 
+router.get(
+    '/apikeys',
+    ensureLogin,
+    function(req, res){
+        APIKey.find({}, function(err, query_result){
+            res.render('apikeylist', {apikeys: query_result});
+        });
+    }
+);
 
+router.get(
+    '/apikey/create',
+    ensureLogin,
+    function(req, res){
+        res.render('apikeycreate');
+    }
+);
+
+router.post(
+    '/apikey/create',
+    ensureLogin,
+    function (req, res) {
+        var apikey = new APIKey(req.body);
+
+        apikey.save(function(err, key){
+            if(err){
+                res.status(400).send(err);
+            }
+            else{
+                res.redirect('/admin/apikey/' + key._id);
+                // res.send(key);
+            }
+        });
+    }
+);
+
+router.get(
+    '/apikey/:id',
+    ensureLogin,
+    function(req, res){
+        APIKey.findOne({_id: req.params.id}, function(err, key){
+            if(err){
+                res.status(500).send(err);
+            }
+            else{
+                res.render('apikeyedit', {key: key});
+            }
+        });
+    }
+);
+
+
+router.post(
+    '/apikey/:id',
+    ensureLogin,
+    function(req, res){
+        var update = req.body;
+        if(update.enabled === "on"){
+            update.enabled = true;
+        }
+        else{
+            update.enabled = false;
+        }
+
+        APIKey.findOneAndUpdate({
+            _id: req.params.id
+        },
+        {
+            $set: update
+        },
+        function(err, key){
+           if(err){
+               res.status(500).send(err);
+           }
+           else{
+               res.redirect('/admin/apikeys')
+           }
+        });
+
+    }
+);
+
+router.post(
+    '/apikey/:id/delete',
+    ensureLogin,
+    function(req, res){
+        APIKey.findOne({
+            _id: req.params.id,
+            username: req.body.username
+        },
+        function(err, query_result){
+          if(err){
+              res.status(500).send(err);
+          }
+          else{
+              if(query_result === null){
+                  res.render('apikeyremove',{result: false, name: req.body.name});
+              }
+              else{
+                  APIKey.findOneAndRemove(
+                      {
+                          _id: req.params.id
+                      },
+                      function(err, query_result){
+                          if(err){
+                              res.status(500).send(err);
+                          }
+                          else{
+                              res.render('apikeyremove', {result: true, name: req.body.name});
+                          }
+                      }
+                  )
+              }
+          }
+        });
+    }
+);
 module.exports = router;

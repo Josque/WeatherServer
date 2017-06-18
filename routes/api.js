@@ -16,7 +16,7 @@ var querySelect = "sensorNodeId measurementType value timestamp"
 
 var ensureApiKey = passport.authenticate('headerapikey', {session: false, failureRedirect: '/api/unauthorized'});
 
-router.get('/measurement', ensureApiKey, function(req, res){
+router.get('/measurement', function(req, res){
 	WeatherMeasurement.find(
 		{},
         querySelect,
@@ -31,7 +31,7 @@ router.get('/measurement', ensureApiKey, function(req, res){
 	})
 });
 
-router.get('/measurement/sensorNode/:sensorNodeID', ensureApiKey, function(req, res){
+router.get('/measurement/sensorNode/:sensorNodeID', function(req, res){
 	WeatherMeasurement.find({
 		sensorNodeID: req.params.sensorNodeID
 	},

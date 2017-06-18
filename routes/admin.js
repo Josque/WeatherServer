@@ -46,7 +46,7 @@ router.post(
     if(req.body.password.length > 0){
         update.passwordHash = User.calculatePasswordHash(req.body.password, function(err, hash){
            if(err){
-               res.statusCode(500).send(err);
+               res.status(500).send(err);
            }
            else {
                update.passwordHash = hash;
@@ -66,7 +66,7 @@ router.post(
                    },
                    function(err, result){
                        if(err){
-                           res.statusCode(500).send(err);
+                           res.status(500).send(err);
                        }
                        else{
                            res.send(result);
@@ -91,7 +91,7 @@ router.post(
         },
         function(err, query_result){
             if(err){
-                res.statusCode(500).send(err)
+                res.status(500).send(err)
             }
             else{
                 if(query_result === null){
@@ -104,7 +104,7 @@ router.post(
                         },
                         function(err, query_result){
                             if(err){
-                                res.statusCode(500).send(err);
+                                res.status(500).send(err);
                             }
                             else{
                                 res.render('userremove', {result: true, username_entered: req.body.username});
@@ -134,12 +134,12 @@ router.post(
         User.createUser(req.body.username, req.body.password, function(err, user){
            if(err){
                console.error(err);
-               res.statusCode(500).send(err);
+               res.status(500).send(err);
            }
            else{
                user.save(function(err){
                    if(err){
-                       res.statusCode(500).send(err);
+                       res.status(500).send(err);
                    }
                    else{
                        res.redirect('/admin/users');

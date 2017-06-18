@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    include toolbar
+
+    h1 Create User
+    form(action="/admin/user/create" method="post")
+        table
+            tr
+                td
+                    span Username:
+                td
+                    input(type='text', name='username')
+            tr
+                td
+                    span Password:
+                td
+                    input(type='password', name='password')
+        input(type='submit')

@@ -1,8 +1,28 @@
 extends layout
 
 block content
+    include toolbar
+
     h1 User: #{user.username}
-    //ul
-    //    each val, index in users
-    //        li
-    //            a(href=val.editUrl) #{val.username}
+    form(action="/admin/user/" + user._id + "/update" method="post")
+        table
+            tr
+                td
+                    span Password:
+                td
+                    input(type='password', name='password')
+            tr
+                td
+                    span Enabled:
+                td
+                    if user.isEnabled
+                        input(type='checkbox', name='enabled' checked)
+                    else
+                        input(type='checkbox', name='enabled')
+
+        input(type='submit')
+    h2 Delete User
+    form(action="/admin/user/" + user._id + "/delete" method="post" name="deleteForm")
+        div Enter username and click confirm to delete this user
+        input(type='text', name='username')
+        input(type='submit' value='confirm')

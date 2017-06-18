@@ -1,7 +1,10 @@
 extends layout
 
 block content
+    include toolbar
+
     h1 Users
+    a(href='/admin/user/create') Create new user
     ul
         each val, index in users
             li

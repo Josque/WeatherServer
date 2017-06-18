@@ -154,6 +154,19 @@ userSchema.virtual('editUrl').get(function(){
     return "/admin/user/" + this._id;
 });
 
+userSchema.statics.calculatePasswordHash = function(password, callback){
+    hash(password).hash(function(err, hash){
+        if(err){
+            return callback(err);
+        }
+        else{
+            return callback(null, hash);
+        }
+    });
+};
+
+userSchema.statics.update
+
 module.exports.APIKey = mongoose.model('APIKey', APIKeySchema);
 module.exports.User = mongoose.model('user', userSchema);
 module.exports.Permissions = Permissions;

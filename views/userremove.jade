@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    include toolbar
+
+    if result
+        h1 The user #{username_entered} has been removed.
+    else
+        h1 The user has not been removed.
+        div The user has not been removed because the wrong username was entered.
+        div You entered: #{username_entered}

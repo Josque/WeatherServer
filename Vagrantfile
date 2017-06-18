@@ -73,5 +73,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     cd /vagrant
     npm install
+    cd /vagrant/ssl
+    ./generatecrt.sh
   SHELL
 end

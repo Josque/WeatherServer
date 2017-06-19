@@ -50,7 +50,8 @@ router.get(
     '/temperature/:ID',
     function(req, res){
         WeatherMeasurement.find({
-                sensorNodeID: req.params.ID
+                sensorNodeID: req.params.ID,
+                measurementType: "temperature"
             },
             null,
             {sort: {timestamp: 1}},

@@ -49,7 +49,12 @@ router.get(
     ensureLogin,
     function(req, res){
         User.find({}, "editUrl username", function(err, query_result){
-            res.render('userlist', {users: query_result});
+            if(err){
+                res.status(500).send(err);
+            }
+            else{
+                res.render('userlist', {users: query_result});
+            }
         });
     }
 );
@@ -59,12 +64,17 @@ router.get(
     ensureLogin,
     function(req, res, next){
         User.findOne({_id: req.params.id}, function(err, query_result){
-            if(query_result == null){
-                next();
-                return;
+            if(err){
+                res.status(500).send(err);
             }
-            res.render('useredit', {user: query_result});
-        })
+            else {
+                if (query_result == null) {
+                    next();
+                    return;
+                }
+                res.render('useredit', {user: query_result});
+            }
+        });
     });
 
 router.post(

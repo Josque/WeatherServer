@@ -1,0 +1,9 @@
+extends layout
+
+block content
+
+    h1 Sensor Nodes
+    ul
+        each val, index in nodes
+            li
+                a(href="/temperature/" + val._id) #{val.name}

@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    include toolbar
+
+    h1 Create Sensor Node
+    form(action="/admin/node/create" method="post")
+        table
+            tr
+                td
+                    span Name:
+                td
+                    input(type='text', name='name')
+        input(type='submit')

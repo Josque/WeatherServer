@@ -42,7 +42,92 @@ router.get(
             }
         })
     }
-)
+);
+
+router.get(
+    '/node/create',
+    ensureLogin,
+    function(req, res){
+        res.render('nodecreate');
+    }
+);
+
+router.post(
+    '/node/create',
+    ensureLogin,
+    function(req, res){
+        var s = new SensorNode(req.body);
+        s.save(function(err, node){
+            if(err){
+                res.status(500).send(err);
+            }
+            else{
+                res.redirect('/admin/node/' + node._id);
+            }
+        });
+    }
+);
+
+router.get(
+    '/node/:id',
+    ensureLogin,
+    function (req, res) {
+        SensorNode.findOne(
+            {
+                _id: req.params.id
+            },
+            function(err, node, next){
+                if(err){
+                    res.status(500).send(err);
+                }
+                else{
+                    if(node === null){
+                        next();
+                    }
+                    else{
+                        res.render('nodeedit', { node: node });
+                    }
+                }
+
+            }
+        )
+    }
+);
+
+router.post(
+    '/node/:id/delete',
+    ensureLogin,
+    function (req, res) {
+        SensorNode.findOne({
+            _id: req.params.id,
+            name: req.body.name
+        },
+        function (err, query_result) {
+            if(err){
+                res.status(500).send(err);
+            }
+            else{
+                if(query_result === null){
+                    res.render('noderemove', { result: false, name: req.body.name});
+                }
+                else{
+                    User.findOneAndRemove({
+                        _id: req.params.id
+                    },
+                    function (err, query_result) {
+                        if(err){
+                            res.status(500).send(err);
+                        }
+                        else{
+                            res.render('noderemove', {result: false, name: req.body.name});
+                        }
+                    });
+                }
+            }
+        });
+    }
+);
+
 
 router.get(
     '/users',
@@ -58,6 +143,8 @@ router.get(
         });
     }
 );
+
+
 
 router.get(
     '/user/:id',

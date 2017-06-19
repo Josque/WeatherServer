@@ -95,6 +95,28 @@ router.get(
 );
 
 router.post(
+    '/node/:id',
+    function (req, res) {
+        SensorNode.findOneAndUpdate(
+            {
+                _id: req.params.id
+            },
+            {
+                $set: req.body
+            },
+            function(err, node){
+                if(err){
+                    res.status(500).send(err);
+                }
+                else{
+                    res.redirect('/admin/nodes');
+                }
+            }
+        )
+    }
+);
+
+router.post(
     '/node/:id/delete',
     ensureLogin,
     function (req, res) {
@@ -111,7 +133,7 @@ router.post(
                     res.render('noderemove', { result: false, name: req.body.name});
                 }
                 else{
-                    User.findOneAndRemove({
+                    SensorNode.findOneAndRemove({
                         _id: req.params.id
                     },
                     function (err, query_result) {
@@ -119,7 +141,7 @@ router.post(
                             res.status(500).send(err);
                         }
                         else{
-                            res.render('noderemove', {result: false, name: req.body.name});
+                            res.render('noderemove', {result: true, name: req.body.name});
                         }
                     });
                 }

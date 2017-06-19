@@ -12,7 +12,7 @@ var SupportedMeasurements = WeatherServerModels.SupportedMeasurements;
 
 var SensorNode = WeatherServerModels.SensorNode;
 
-var querySelect = "sensorNodeId measurementType value timestamp"
+var querySelect = "sensorNodeID measurementType value timestamp"
 
 var ensureApiKey = passport.authenticate('headerapikey', {session: false, failureRedirect: '/api/unauthorized'});
 

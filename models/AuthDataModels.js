@@ -29,7 +29,7 @@ var Permissions = [
 var APIKeySchema = mongoose.Schema({
     APIKey: {
         type: String,
-        default: uuid(),
+        default: uuid,
         required: true,
         unique: true
     },

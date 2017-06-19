@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    include toolbar
+
+    h1 Sensor Nodes
+    a(href='/admin/node/create') Create new sensor node
+    ul
+        each val, index in nodes
+            li
+                a(href="/admin/node/" + val._id) #{val.name}

@@ -12,9 +12,38 @@ mongoose.connect(config.mongooseURL);
 var AuthModels = require('../models/AuthDataModels');
 var User = AuthModels.User;
 var APIKey = AuthModels.APIKey;
+var WeatherDataModels = require('../models/WeatherDataModels');
+var SensorNode = WeatherDataModels.SensorNode;
 
 var ensureLogin = require('connect-ensure-login').ensureLoggedIn();
 /* GET home page. */
+router.get(
+    '/',
+    ensureLogin,
+    function (req, res) {
+        res.render(
+            'adminhome'
+        );
+    }
+);
+
+router.get(
+    '/nodes',
+    ensureLogin,
+    function (req, res) {
+        SensorNode.find({}, "name _id", function (err, query_result) {
+            if(err){
+                res.status(500).send(err);
+            }
+            else{
+                res.render(
+                    'nodelist', {nodes: query_result}
+                );
+            }
+        })
+    }
+)
+
 router.get(
     '/users',
     ensureLogin,

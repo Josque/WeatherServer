@@ -6,19 +6,31 @@ var User = require('../models/AuthDataModels').User;
 
 mongoose.connect('mongodb://localhost/weatherserver');
 
-
-User.createUser("admin", "admin", function(err, user){
+User.findOne({
+    username: "admin"
+},
+function(err, u){
     if(err){
         console.error(err);
     }
-    user.save(function(err){
-        if(err){
-            console.error(err);
+    else{
+        if(u === null){
+            User.createUser("admin", "admin", function(err, user){
+                if(err){
+                    console.error(err);
+                }
+                user.save(function(err){
+                    if(err){
+                        console.error(err);
+                    }
+                    else{
+                    }
+                });
+                console.log(user);
+            });
         }
-        else{
-            mongoose.disconnect();
-        }
-    });
-    console.log(user);
+    }
+    mongoose.disconnect();
 });
+
 

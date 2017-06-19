@@ -1,0 +1,25 @@
+extends layout
+
+block content
+    include toolbar
+
+    h1 Edit Sensor Node
+    form(action="/admin/node/" + node._id method="post")
+        table
+            tr
+                td UUID
+                td #{node.sensorNodeID}
+            tr
+                td Name
+                td
+                    input(type='text', value='#{node.name}', name='name')
+
+            tr
+                td Created On
+                td #{node.dateAdded}
+        input(type='submit')
+    h2 Delete Sensor Node
+    form(action="/admin/node/#{node._id}/delete" method="post")
+        div Enter node name and click confirm to delete this key
+        input(type='text', name='name')
+        input(type='submit', value='confirm')

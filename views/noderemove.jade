@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    include toolbar
+
+    if result
+        h1 The Sensor Node #{name} has been removed.
+    else
+        h1 The Sensor Node has not been removed.
+        div The Sensor Node has not been removed because the wrong name was entered.
+        div You entered: #{name}

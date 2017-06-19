@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
-rm server.cert server.key
+if [ -f server.cert ]; then
+    rm server.cert
+fi
+if [ -f server.key ]; then
+    rm server.key
+fi
+
 openssl req  \
     -nodes \
     -new \

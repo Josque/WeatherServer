@@ -70,7 +70,12 @@ APIKeySchema.statics.checkAPIKey = function(apikey, callback){
             callback(null, false);
         }
         if(key){
-            callback(null, key);
+            if(key.enabled){
+                callback(null, key);
+            }
+            else{
+                callback(null, false);
+            }
         }
     })
 };
@@ -144,7 +149,12 @@ userSchema.statics.checkLogin = function(username, password, callback){
                return callback(null, false);
            }
            if(verified){
-               return callback(null, user);
+               if(user.isEnabled){
+                   return callback(null, user);
+               }
+               else{
+                   return callback(null, false);
+               }
            }
         });
     });

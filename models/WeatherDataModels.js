@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var uuid = require('uuid/v4');
 
-var supportedMeasurements = ["temperature", "relativeHumidity"];
+var supportedMeasurements = ["temperature", "relativeHumidity", "airPressure"];
 
 var WeatherMeasurementSchema = mongoose.Schema({
     sensorNodeID: {
@@ -29,7 +29,7 @@ var SensorNodeSchema = mongoose.Schema({
     },
     sensorNodeID: {
         type: String,
-        default: uuid(),
+        default: uuid,
         required: true
     },
     measurementTypes: {

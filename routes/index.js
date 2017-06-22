@@ -48,7 +48,7 @@ router.get(
 );
 
 router.get('/temperature', function(req, res){
-    SensorNode.find({}, "name _id", function (err, query_result) {
+    SensorNode.find({}, "name sensorNodeID", function (err, query_result) {
         if(err){
             res.status(500).send(err);
         }
